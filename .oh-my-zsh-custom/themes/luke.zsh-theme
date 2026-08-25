@@ -29,6 +29,9 @@ function mygit() {
 
 function retcode() {}
 
+# kube_ps1 is only defined when the kube-ps1 plugin is enabled; degrade to empty
+(( $+functions[kube_ps1] )) || function kube_ps1() {}
+
 # alternate prompt with git & hg
 PROMPT=$'%{$fg_bold[blue]%}┌─[%{$fg_bold[green]%}%n%b%{$fg[black]%}@%{$fg[cyan]%}%m%{$fg_bold[blue]%}]%{$reset_color%} - %{$fg_bold[blue]%}[%{$fg_bold[default]%}%~%{$fg_bold[blue]%}]%{$reset_color%} - %{$fg_bold[blue]%}[%b%{$fg[yellow]%}'%D{"%Y-%m-%d %I:%M:%S"}%b$'%{$fg_bold[blue]%}]
 %{$fg_bold[blue]%}└─[%{$fg_bold[magenta]%}%?$(retcode)%{$fg_bold[blue]%}] <$(mygit)$(hg_prompt_info)$(kube_ps1)>%{$reset_color%} '
