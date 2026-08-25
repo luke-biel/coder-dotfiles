@@ -1,0 +1,9 @@
+[user]
+	name = Łukasz Biel
+	email = lukasz.biel@fathom.io
+[core]
+	editor = helix
+[init]
+	defaultBranch = main
+[push]
+	autoSetupremote = true

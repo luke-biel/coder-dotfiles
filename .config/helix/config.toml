@@ -1,0 +1,16 @@
+[editor]
+line-number = "relative"
+cursorline = true
+auto-save = true
+auto-format = false
+bufferline = "always"
+
+[editor.cursor-shape]
+insert = "bar"
+normal = "block"
+select = "underline"
+
+[editor.whitespace.render]
+space = "all"
+tab = "all"
+newline = "none"
