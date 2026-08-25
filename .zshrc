@@ -16,10 +16,10 @@ done
 unset _fzf_dir
 
 # --- User configuration ---
-export EDITOR=helix
+export EDITOR=hx
 
 # Aliases
-alias hx=helix
+alias helix=hx
 alias cat=bat
 
 # direnv
@@ -27,3 +27,4 @@ eval "$(direnv hook zsh)"
 
 # Local, non-versioned overrides (PATHs, secrets, machine-specific bits)
 [ -f "$HOME/.zshrc.local" ] && source "$HOME/.zshrc.local"
+export PATH="$PATH:/home/coder/.local/bin"
