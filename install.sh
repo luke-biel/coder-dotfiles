@@ -23,11 +23,10 @@ link "$DOTFILES_DIR/.config/nushell/config.nu"   "$HOME/.config/nushell/config.n
 link "$DOTFILES_DIR/.config/nushell/env.nu"      "$HOME/.config/nushell/env.nu"
 
 # Custom oh-my-zsh theme referenced by ZSH_THEME="luke"
-if [ -d "$HOME/.oh-my-zsh" ]; then
-  link "$DOTFILES_DIR/.oh-my-zsh-custom/themes/luke.zsh-theme" \
-       "$HOME/.oh-my-zsh/custom/themes/luke.zsh-theme"
-else
-  echo "warning: ~/.oh-my-zsh not found; luke theme not linked" >&2
+if [ ! -d "$HOME/.oh-my-zsh" ]; then
+  git clone --depth=1 https://github.com/ohmyzsh/ohmyzsh.git "$HOME/.oh-my-zsh"
 fi
+link "$DOTFILES_DIR/.oh-my-zsh-custom/themes/luke.zsh-theme" \
+     "$HOME/.oh-my-zsh/custom/themes/luke.zsh-theme"
 
 echo "dotfiles installed."
