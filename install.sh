@@ -22,6 +22,9 @@ link "$DOTFILES_DIR/.config/zellij/config.kdl"   "$HOME/.config/zellij/config.kd
 link "$DOTFILES_DIR/.config/nushell/config.nu"   "$HOME/.config/nushell/config.nu"
 link "$DOTFILES_DIR/.config/nushell/env.nu"      "$HOME/.config/nushell/env.nu"
 
+# Global git hooks (pre-push guards protected branches; see core.hooksPath)
+link "$DOTFILES_DIR/.config/git/hooks/pre-push"  "$HOME/.config/git/hooks/pre-push"
+
 # Custom oh-my-zsh theme referenced by ZSH_THEME="luke"
 if [ ! -d "$HOME/.oh-my-zsh" ]; then
   git clone --depth=1 https://github.com/ohmyzsh/ohmyzsh.git "$HOME/.oh-my-zsh"

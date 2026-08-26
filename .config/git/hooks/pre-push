@@ -1,0 +1,44 @@
+#!/usr/bin/env bash
+# Blocks pushes to main/master for repos living under a protected parent dir.
+# Wired in globally via `core.hooksPath` (see .gitconfig).
+#
+# git passes "<local ref> <local sha> <remote ref> <remote sha>" per ref on stdin.
+set -euo pipefail
+
+# Colon-separated list of parent dirs whose repos are protected.
+# Override per-machine with the PROTECTED_PARENT_DIRS env var.
+PROTECTED_PARENT_DIRS="${PROTECTED_PARENT_DIRS:-$HOME/Workspace/fathom-io}"
+
+# Branches nobody should push to directly.
+PROTECTED_BRANCHES="main master"
+
+repo_root="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
+
+in_protected_dir=0
+IFS=':' read -ra dirs <<< "$PROTECTED_PARENT_DIRS"
+for dir in "${dirs[@]}"; do
+  [ -z "$dir" ] && continue
+  # Resolve to an absolute, symlink-free path for a reliable prefix match.
+  resolved="$(cd "$dir" 2>/dev/null && pwd -P || echo "$dir")"
+  case "$repo_root/" in
+    "$resolved"/*) in_protected_dir=1; break ;;
+  esac
+done
+
+# Not under a protected dir -> allow.
+[ "$in_protected_dir" -eq 1 ] || exit 0
+
+while read -r local_ref local_sha remote_ref remote_sha; do
+  # Deletions send a zero local sha; nothing to guard.
+  [ -z "$remote_ref" ] && continue
+  branch="${remote_ref#refs/heads/}"
+  for protected in $PROTECTED_BRANCHES; do
+    if [ "$branch" = "$protected" ]; then
+      echo "pre-push: blocked push to '$branch' in protected repo '$repo_root'." >&2
+      echo "          open a PR instead, or override with 'git push --no-verify'." >&2
+      exit 1
+    fi
+  done
+done
+
+exit 0

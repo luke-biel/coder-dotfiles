@@ -3,6 +3,7 @@
 	email = lukasz.biel@fathom.io
 [core]
 	editor = helix
+	hooksPath = ~/.config/git/hooks
 [init]
 	defaultBranch = main
 [push]

@@ -22,3 +22,16 @@ coder dotfiles <git-url>
 | `.config/zellij/config.kdl`               | `~/.config/zellij/config.kdl` | zellij                                      |
 | `.config/nushell/config.nu`               | `~/.config/nushell/config.nu` | nushell (`nu`) + oh-my-posh                 |
 | `.config/nushell/env.nu`                  | `~/.config/nushell/env.nu`    | nushell                                     |
+| `.config/git/hooks/pre-push`              | `~/.config/git/hooks/`        | git (`core.hooksPath`, blocks main/master)  |
+
+## Protected-branch pre-push hook
+
+`.gitconfig` sets `core.hooksPath = ~/.config/git/hooks` globally. The `pre-push`
+hook there blocks direct pushes to `main`/`master` for any repo living under a
+protected parent dir (default `~/Workspace/fathom-io`).
+
+- Override the dirs per-machine: `export PROTECTED_PARENT_DIRS=/a:/b`
+- Bypass a single push: `git push --no-verify`
+
+Note: a global `core.hooksPath` replaces each repo's `.git/hooks`. Only
+`pre-push` lives here, so other repos' hooks are simply absent, not broken.
