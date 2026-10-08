@@ -24,6 +24,10 @@ coder dotfiles <git-url>
 | `.config/nushell/env.nu`                  | `~/.config/nushell/env.nu`    | nushell                                     |
 | `.config/git/hooks/pre-push`              | `~/.config/git/hooks/`        | git (`core.hooksPath`, blocks main/master)  |
 
+## System packages
+
+`install.sh` also apt-installs packages the workspace templates do not ship.
+
 ## Protected-branch pre-push hook
 
 `.gitconfig` sets `core.hooksPath = ~/.config/git/hooks` globally. The `pre-push`

@@ -32,4 +32,24 @@ fi
 link "$DOTFILES_DIR/.oh-my-zsh-custom/themes/luke.zsh-theme" \
      "$HOME/.oh-my-zsh/custom/themes/luke.zsh-theme"
 
+
+# System packages (apt). Requires passwordless sudo, which the workspace
+# templates provision for the workspace user.
+if command -v apt-get >/dev/null 2>&1 && sudo -n true 2>/dev/null; then
+  if ! dpkg-query -W poppler-utils >/dev/null 2>&1; then
+    echo "Installing poppler-utils (pdftotext, pdfinfo, pdftoppm)"
+    if ! sudo -n env DEBIAN_FRONTEND=noninteractive apt-get \
+      -o DPkg::Lock::Timeout=300 -o Acquire::Retries=3 update; then
+      echo "WARNING: apt-get update failed" >&2
+    fi
+    if ! sudo -n env DEBIAN_FRONTEND=noninteractive apt-get \
+      -o DPkg::Lock::Timeout=300 -o Acquire::Retries=3 \
+      install -y --no-install-recommends poppler-utils; then
+      echo "WARNING: poppler-utils install failed; pdftotext and pdfinfo will be missing" >&2
+    fi
+  fi
+else
+  echo "Skipping apt packages (no apt-get or no passwordless sudo)"
+fi
+
 echo "dotfiles installed."

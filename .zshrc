@@ -28,3 +28,7 @@ eval "$(direnv hook zsh)"
 # Local, non-versioned overrides (PATHs, secrets, machine-specific bits)
 [ -f "$HOME/.zshrc.local" ] && source "$HOME/.zshrc.local"
 export PATH="$PATH:/home/coder/.local/bin"
+export PATH="$PATH:/home/lukaszbiel/.local/bin"
+
+# opencode (user-installed; not part of the rust template)
+[ -d "$HOME/.opencode/bin" ] && export PATH="$HOME/.opencode/bin:$PATH"
