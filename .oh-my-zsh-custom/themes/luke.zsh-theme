@@ -16,6 +16,12 @@ ZSH_THEME_GIT_PROMPT_DELETED="%{$fg[red]%}✗"
 ZSH_THEME_GIT_PROMPT_RENAMED="%{$fg[blue]%}➦"
 ZSH_THEME_GIT_PROMPT_UNMERGED="%{$fg[magenta]%}✂"
 ZSH_THEME_GIT_PROMPT_UNTRACKED="%{$fg[blue]%}✈"
+# Also referenced by omz's git_prompt_status (lib/git.zsh); defined so the
+# prompt survives `set -u` (e.g. a sourced install.sh) and shows sync/stash state.
+ZSH_THEME_GIT_PROMPT_AHEAD="%{$fg[cyan]%}↑"
+ZSH_THEME_GIT_PROMPT_BEHIND="%{$fg[cyan]%}↓"
+ZSH_THEME_GIT_PROMPT_DIVERGED="%{$fg[cyan]%}↕"
+ZSH_THEME_GIT_PROMPT_STASHED="%{$fg[yellow]%}✭"
 ZSH_THEME_GIT_PROMPT_SHA_BEFORE=" %{$fg[blue]%}"
 ZSH_THEME_GIT_PROMPT_SHA_AFTER="%{$reset_color%}"
 

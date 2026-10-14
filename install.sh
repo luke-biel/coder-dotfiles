@@ -34,22 +34,37 @@ link "$DOTFILES_DIR/.oh-my-zsh-custom/themes/luke.zsh-theme" \
 
 
 # System packages (apt). Requires passwordless sudo, which the workspace
-# templates provision for the workspace user.
-if command -v apt-get >/dev/null 2>&1 && sudo -n true 2>/dev/null; then
-  if ! dpkg-query -W poppler-utils >/dev/null 2>&1; then
-    echo "Installing poppler-utils (pdftotext, pdfinfo, pdftoppm)"
+# templates provision for the workspace user. Packages are listed in
+# apt.txt (one per line; blank lines and '#'-comment lines are ignored).
+APT_LIST="$DOTFILES_DIR/apt.txt"
+
+if ! command -v apt-get >/dev/null 2>&1 || ! sudo -n true 2>/dev/null; then
+  echo "Skipping apt packages (no apt-get or no passwordless sudo)"
+elif [ ! -f "$APT_LIST" ]; then
+  echo "Skipping apt packages ($APT_LIST not found)"
+else
+  # Collect listed packages that are not installed yet.
+  missing=()
+  while IFS= read -r pkg; do
+    if ! dpkg-query -W "$pkg" >/dev/null 2>&1; then
+      missing+=("$pkg")
+    fi
+  done < <(grep -vE '^[[:space:]]*(#|$)' "$APT_LIST")
+
+  if [ "${#missing[@]}" -eq 0 ]; then
+    echo "apt packages already installed."
+  else
+    echo "Installing apt packages: ${missing[*]}"
     if ! sudo -n env DEBIAN_FRONTEND=noninteractive apt-get \
       -o DPkg::Lock::Timeout=300 -o Acquire::Retries=3 update; then
       echo "WARNING: apt-get update failed" >&2
     fi
     if ! sudo -n env DEBIAN_FRONTEND=noninteractive apt-get \
       -o DPkg::Lock::Timeout=300 -o Acquire::Retries=3 \
-      install -y --no-install-recommends poppler-utils; then
-      echo "WARNING: poppler-utils install failed; pdftotext and pdfinfo will be missing" >&2
+      install -y --no-install-recommends "${missing[@]}"; then
+      echo "WARNING: apt install failed for: ${missing[*]}" >&2
     fi
   fi
-else
-  echo "Skipping apt packages (no apt-get or no passwordless sudo)"
 fi
 
 echo "dotfiles installed."

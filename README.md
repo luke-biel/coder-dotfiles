@@ -11,6 +11,10 @@ Coder dashboard, or run manually:
 coder dotfiles <git-url>
 ```
 
+> Run `install.sh` as a script (`./install.sh`); don't `source` it. Its
+> `set -euo pipefail` leaks into the interactive shell — under zsh, `set -u`
+> makes the oh-my-zsh async git prompt stub error on every prompt render.
+
 ## What's here
 
 | File                                      | Target                        | Tool (present in rust image)                |
@@ -27,6 +31,11 @@ coder dotfiles <git-url>
 ## System packages
 
 `install.sh` also apt-installs packages the workspace templates do not ship.
+The list lives in [`apt.txt`](apt.txt): one package per line (`#` comments and
+blank lines are ignored). `install.sh` checks each against dpkg and installs
+the missing ones in a single `apt-get install`. Currently: `apparmor`,
+`bubblewrap`, `poppler-utils`, and the Xvfb + X11/GL/font library set that
+headless Chromium (Playwright/Puppeteer) needs.
 
 ## Protected-branch pre-push hook
 

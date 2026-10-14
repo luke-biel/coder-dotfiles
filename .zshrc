@@ -4,6 +4,14 @@ export ZSH="$HOME/.oh-my-zsh"
 # Custom two-line prompt (themes/luke.zsh-theme, installed by install.sh)
 ZSH_THEME="luke"
 
+# oh-my-zsh master ships async git prompt stubs that read
+# _OMZ_ASYNC_OUTPUT[...]. The background handler is only registered (and the
+# key populated) when $(git_prompt_status) appears literally in $PS1; the luke
+# theme calls it via mygit(), so the key stays unset — and under `set -u`
+# (e.g. after sourcing install.sh) the stub errors on every prompt render.
+# Use the sync wrappers instead.
+zstyle ':omz:alpha:lib:git' async-prompt no
+
 plugins=(git rust docker npm)
 
 source $ZSH/oh-my-zsh.sh
