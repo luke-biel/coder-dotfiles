@@ -37,6 +37,11 @@ the missing ones in a single `apt-get install`. Currently: `apparmor`,
 `bubblewrap`, `poppler-utils`, and the Xvfb + X11/GL/font library set that
 headless Chromium (Playwright/Puppeteer) needs.
 
+## Global npm tools
+
+`install.sh` runs `npm install -g httpyac` when npm is available and `httpyac`
+is not already installed.
+
 ## Protected-branch pre-push hook
 
 `.gitconfig` sets `core.hooksPath = ~/.config/git/hooks` globally. The `pre-push`

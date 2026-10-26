@@ -40,3 +40,7 @@ export PATH="$PATH:/home/lukaszbiel/.local/bin"
 
 # opencode (user-installed; not part of the rust template)
 [ -d "$HOME/.opencode/bin" ] && export PATH="$HOME/.opencode/bin:$PATH"
+
+# >>> Codex installer >>>
+export PATH="/home/lukaszbiel/.local/bin:$PATH"
+# <<< Codex installer <<<

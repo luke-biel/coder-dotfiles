@@ -67,4 +67,13 @@ else
   fi
 fi
 
+# Global npm tools
+if ! command -v npm >/dev/null 2>&1; then
+  echo "Skipping npm packages (npm not found)"
+elif ! command -v httpyac >/dev/null 2>&1; then
+  if ! npm install -g httpyac; then
+    echo "WARNING: npm install failed for: httpyac" >&2
+  fi
+fi
+
 echo "dotfiles installed."
