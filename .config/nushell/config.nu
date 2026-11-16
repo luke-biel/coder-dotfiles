@@ -49,8 +49,7 @@ def git_main_branch [] {
     for ref in $refs {
         if (do { git show-ref -q --verify $ref } | complete | get exit_code) == 0 {
             # Extract the last path component (equivalent to ${ref:t})
-            echo ($ref | path basename)
-            return
+            return ($ref | path basename)
         }
     }
 

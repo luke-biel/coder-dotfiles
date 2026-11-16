@@ -44,3 +44,24 @@ export PATH="$PATH:/home/lukaszbiel/.local/bin"
 # >>> Codex installer >>>
 export PATH="/home/lukaszbiel/.local/bin:$PATH"
 # <<< Codex installer <<<
+# shellcheck shell=bash
+# fathom-codex-login-reminder (managed, do not edit): prompt users to complete Codex device-code auth.
+_codex_login_reminder() {
+  if command -v codex >/dev/null 2>&1 && ! codex login status >/dev/null 2>&1; then
+    echo
+    echo 'Codex is not authenticated for ChatGPT.'
+    echo 'Sign in with your company ChatGPT Business account by running:'
+    echo '    codex login --device-auth'
+    echo 'Never share the one-time device code with anyone.'
+    echo
+  fi
+}
+_codex_login_reminder
+unset _codex_login_reminder
+
+# Hand off interactive terminals to nushell (zsh stays the login shell).
+# Skips `zsh -c`, non-tty sessions, and shells started from inside nu.
+if [[ -o interactive && -z $ZSH_EXECUTION_STRING && -t 0 && -t 1 && -z $NU_NESTED ]] && (( $+commands[nu] )); then
+  export NU_NESTED=1
+  exec nu
+fi
