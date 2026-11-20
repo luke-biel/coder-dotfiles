@@ -22,7 +22,7 @@
 ####
 
 $env.config.show_banner = false
-$env.config.buffer_editor = "helix"
+$env.config.buffer_editor = "hx"
 
 oh-my-posh init nu --config jblab_2021
 
@@ -105,7 +105,6 @@ alias gco = git checkout
 alias ll = ls -al
 alias gst = git status
 alias glg = git log --stat
-alias hx = helix
 
 ### Direnv
 

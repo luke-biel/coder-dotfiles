@@ -37,6 +37,21 @@ the missing ones in a single `apt-get install`. Currently: `apparmor`,
 `bubblewrap`, `poppler-utils`, and the Xvfb + X11/GL/font library set that
 headless Chromium (Playwright/Puppeteer) needs.
 
+## kache
+
+At workspace startup, `install.sh` starts the `kache` daemon if the binary is
+installed. This runs before any interactive shell and doesn't require a
+systemd user session. Run `kache daemon status` to verify that the daemon is
+running; the login service is not installed by this script.
+
+## OpenCode
+
+At workspace startup, `install.sh` installs OpenCode V2 into `~/.opencode/bin`
+if missing, sets the shared service port to `4096`, and starts it. Run
+`opencode service status` to verify the address. The first port change stops
+any existing daemon, so run the installer from a separate shell if applying
+it manually during an OpenCode session.
+
 ## Global npm tools
 
 `install.sh` runs `npm install -g httpyac` when npm is available and `httpyac`

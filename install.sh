@@ -76,4 +76,36 @@ elif ! command -v httpyac >/dev/null 2>&1; then
   fi
 fi
 
+# Coder reruns this script at workspace startup, before any interactive shell.
+# Start kache directly: the Coder agent doesn't need a systemd user session.
+kache_bin="$(type -P kache || true)"
+if [ -z "$kache_bin" ]; then
+  for candidate in "${CARGO_HOME:-$HOME/.cargo}/bin/kache" /usr/local/cargo/bin/kache; do
+    if [ -x "$candidate" ]; then
+      kache_bin="$candidate"
+      break
+    fi
+  done
+fi
+if [ -z "$kache_bin" ]; then
+  echo "Skipping kache setup (kache not found)"
+else
+  if ! "$kache_bin" init --yes --no-service --no-shell; then
+    echo "WARNING: kache init failed; check kache doctor" >&2
+  fi
+  if ! "$kache_bin" daemon start; then
+    echo "WARNING: kache daemon failed to start; check kache daemon status" >&2
+  fi
+fi
+
+opencode_bin="$HOME/.opencode/bin/opencode"
+if [ ! -x "$opencode_bin" ]; then
+  curl -fsSL https://opencode.ai/v2/install | bash -s -- --no-modify-path
+fi
+# Setting the port stops a running daemon, so only set it when it changes.
+if [ "$("$opencode_bin" service get port)" != 4096 ]; then
+  "$opencode_bin" service set port 4096
+fi
+"$opencode_bin" service start
+
 echo "dotfiles installed."

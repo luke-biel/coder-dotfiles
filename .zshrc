@@ -38,7 +38,7 @@ eval "$(direnv hook zsh)"
 export PATH="$PATH:/home/coder/.local/bin"
 export PATH="$PATH:/home/lukaszbiel/.local/bin"
 
-# opencode (user-installed; not part of the rust template)
+# OpenCode (installed by the dotfiles startup script)
 [ -d "$HOME/.opencode/bin" ] && export PATH="$HOME/.opencode/bin:$PATH"
 
 # >>> Codex installer >>>
